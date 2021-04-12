@@ -1,0 +1,3 @@
+﻿Tools -> NuGet Package Manager -> Package Manager Console
+
+> Scaffold-DbContext "Server=B-PC;Database=reddit_clone;Trusted_Connection=True;" Microsoft.EntityFrameworkCore.SqlServer -OutputDir Models -Force

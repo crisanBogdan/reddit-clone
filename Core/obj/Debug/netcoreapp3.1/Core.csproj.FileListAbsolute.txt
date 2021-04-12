@@ -1,0 +1,13 @@
+C:\Users\b\source\repos\Forum\Core\obj\Debug\netcoreapp3.1\Core.csprojAssemblyReference.cache
+C:\Users\b\source\repos\Forum\Core\obj\Debug\netcoreapp3.1\Core.AssemblyInfoInputs.cache
+C:\Users\b\source\repos\Forum\Core\obj\Debug\netcoreapp3.1\Core.AssemblyInfo.cs
+C:\Users\b\source\repos\Forum\Core\bin\Debug\netcoreapp3.1\Core.exe
+C:\Users\b\source\repos\Forum\Core\bin\Debug\netcoreapp3.1\Core.deps.json
+C:\Users\b\source\repos\Forum\Core\bin\Debug\netcoreapp3.1\Core.runtimeconfig.json
+C:\Users\b\source\repos\Forum\Core\bin\Debug\netcoreapp3.1\Core.runtimeconfig.dev.json
+C:\Users\b\source\repos\Forum\Core\bin\Debug\netcoreapp3.1\Core.dll
+C:\Users\b\source\repos\Forum\Core\bin\Debug\netcoreapp3.1\Core.pdb
+C:\Users\b\source\repos\Forum\Core\obj\Debug\netcoreapp3.1\Core.dll
+C:\Users\b\source\repos\Forum\Core\obj\Debug\netcoreapp3.1\Core.pdb
+C:\Users\b\source\repos\Forum\Core\obj\Debug\netcoreapp3.1\Core.csproj.CoreCompileInputs.cache
+C:\Users\b\source\repos\Forum\Core\obj\Debug\netcoreapp3.1\Core.genruntimeconfig.cache

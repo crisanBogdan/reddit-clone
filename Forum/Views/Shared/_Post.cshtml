@@ -1,0 +1,97 @@
+﻿@model Core.Entity.Post;
+@functions{
+    @functions{
+        string FormatCreatedAtDate(DateTime createdAt)
+        {
+            var dif = DateTime.Now.Subtract(createdAt);
+            var days = Convert.ToInt32(dif.TotalDays);
+            var months = days / 30;
+            var years = days / 365;
+            var hours = Convert.ToInt32(dif.TotalHours);
+            var minutes = Convert.ToInt32(dif.TotalMinutes);
+            if (years > 0)
+            {
+                return years == 1 ? "a year ago" : $"{years} years ago";
+            }
+            if (months > 0)
+            {
+                return months == 1 ? "a month ago" : $"{months} months ago";
+            }
+            if (days > 0)
+            {
+                return days == 1 ? "a day ago" : $"{days} days ago";
+            }
+            if (hours > 0)
+            {
+                return hours == 1 ? "an hour ago" : $"{hours} hours ago";
+            }
+            return minutes <= 1 ? "a minute ago" : $"{minutes} minutes ago";
+        }
+    }
+
+    string PostTitleToUrlRoute(string title)
+    {
+        return String.Join('_', title.Split(' ').Select(x => x.ToLowerInvariant()));
+    }
+
+    bool IsUpvoted(Core.Entity.Vote v)
+    {
+        if (v == null)
+        {
+            return false;
+        }
+        if (v.VoteType == Core.Entity.VoteType.Up)
+        {
+            return true;
+        }
+        return false;
+    }
+
+    bool IsDownvoted(Core.Entity.Vote v)
+    {
+        if (v == null)
+        {
+            return false;
+        }
+        if (v.VoteType == Core.Entity.VoteType.Down)
+        {
+            return true;
+        }
+        return false;
+    }
+}
+<li class="d-flex flex-row @(Model.Detailed ? "mb-2" : "")">
+    <div class="bg-secondary text-white mb-2 d-flex flex-column align-items-center justify-content-center p-2 rounded-left">
+        <button class="btn btn-link @(IsUpvoted(Model.VoteByUser) ? "text-danger" : "text-white") font-weight-bold text-decoration-none post-upvote-btn"
+                data-post-id="@Model.Id">
+            <div style="transform: rotate(90deg); margin-left: 3px">&lt;</div>
+    </button>
+        <div class="post-rating" data-post-id="@Model.Id">@Model.Rating</div>
+        <button class="btn btn-link @(IsDownvoted(Model.VoteByUser) ? "text-danger" : "text-white") font-weight-bold text-decoration-none post-downvote-btn"
+                data-post-id="@Model.Id">
+            <div style="transform: rotate(90deg); margin-left: 2px">&gt;</div>
+        </button>
+    </div>
+    <div class="d-flex flex-column align-items-start justify-content-center p-2">
+        <span class="text-secondary"><a href="/r/@Model.TopicName">r/@Model.TopicName</a> - Posted by <a>@Model.Username</a> @FormatCreatedAtDate(Model.CreatedAt)</span>
+        @if (Model.Url != null)
+        {
+            <a href="//@Model.Url" target="_blank" rel="noreferrer noopener">
+                <h4>@Model.Title</h4>
+            </a>
+        }
+        else
+        {
+            <a href="/r/@Model.TopicName/comments/@Model.Id/@PostTitleToUrlRoute(Model.Title)">
+                <h4>@Model.Title</h4>
+            </a>
+        }
+        @if (Model.Detailed)
+        {
+            <div class="p-2 my-2">
+                @Model.Content
+            </div>
+        }
+        <a href="/r/@Model.TopicName/comments/@Model.Id/@PostTitleToUrlRoute(Model.Title)">@Model.CommentCount comments</a>
+    </div>
+</li>

@@ -1,0 +1,22 @@
+﻿@model Web.Models.SignUpModel
+
+    <form asp-controller="Home" asp-action="OnSignUp" method="post">
+        <div class="form-group">
+            <div><label for="username">Username:</label></div>
+            <input type="text" name="username" asp-for="Username" />
+        </div>
+        <div class="form-group">
+            <div><label for="password">Password:</label></div>
+            <input type="password" name="password" asp-for="Password" />
+        </div>
+        <div class="form-group">
+            <div><label>Re-type Password:</label></div>
+            <input type="password" asp-for="RepeatedPassword" />
+        </div>
+        @if (!String.IsNullOrEmpty(Model.ErrorMessage))
+        {
+
+            <div class="alert alert-danger">@Model.ErrorMessage</div>
+        }
+        <button type="submit" class="btn btn-primary">Sign Up</button>
+    </form>

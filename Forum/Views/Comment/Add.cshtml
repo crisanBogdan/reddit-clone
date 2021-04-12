@@ -1,0 +1,22 @@
+﻿@model AddCommentModel
+
+@{
+    ViewData["Title"] = "Add";
+}
+
+<div>
+    <form id="add-comment" asp-controller="Comment" asp-action="SubmitComment">
+        <input type="hidden" asp-for="@Model.PostId" value="@Model.PostId" />
+        <input type="hidden" asp-for="@Model.CommentId" value="@Model.CommentId" />
+        <h3>Add a comment</h3>
+        <textarea asp-for="@Model.Content" placeholder="Write your comment here..." class="w-50" style="min-height: 96px"></textarea>
+        <div>
+            <button type="submit" class="btn btn-primary">Submit</button>
+        </div>
+    </form>
+</div>
+
+@section Scripts {
+    <script src="~/js/add-comment.js"></script>
+}
+

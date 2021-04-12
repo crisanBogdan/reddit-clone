@@ -1,0 +1,125 @@
+﻿@using Core.Entity;
+@using Microsoft.AspNetCore.Html;
+@model Web.Models.PostDetailsModel;
+
+@{
+    ViewData["Title"] = Model.Post.Title;
+}
+
+@functions {
+    string FormatCreatedAtDate(DateTime createdAt)
+    {
+        var dif = DateTime.Now.Subtract(createdAt);
+        var days = Convert.ToInt32(dif.TotalDays);
+        var months = days / 30;
+        var years = days / 365;
+        var hours = Convert.ToInt32(dif.TotalHours);
+        var minutes = Convert.ToInt32(dif.TotalMinutes);
+        if (years > 0)
+        {
+            return years == 1 ? "a year ago" : $"{years} years ago";
+        }
+        if (months > 0)
+        {
+            return months == 1 ? "a month ago" : $"{months} months ago";
+        }
+        if (days > 0)
+        {
+            return days == 1 ? "a day ago" : $"{days} days ago";
+        }
+        if (hours > 0)
+        {
+            return hours == 1 ? "an hour ago" : $"{hours} hours ago";
+        }
+        return minutes <= 1 ? "a minute ago" : $"{minutes} minutes ago";
+    }
+
+    bool IsUpvoted(Core.Entity.Vote v)
+    {
+        if (v == null)
+        {
+            return false;
+        }
+        if (v.VoteType == Core.Entity.VoteType.Up)
+        {
+            return true;
+        }
+        return false;
+    }
+
+    bool IsDownvoted(Core.Entity.Vote v)
+    {
+        if (v == null)
+        {
+            return false;
+        }
+        if (v.VoteType == Core.Entity.VoteType.Down)
+        {
+            return true;
+        }
+        return false;
+    }
+
+    String HtmlComment(Comment comment)
+    {
+        return @"
+            <li class='d-flex flex-row'>
+                <div class='mb-2 d-flex flex-column align-items-center justify-content-center p-2'>
+                    <button class='btn btn-link " + (IsUpvoted(comment.VoteByUser) ? "text-danger" : "text-black-50") + @" font-weight-bold text-decoration-none comment-upvote-btn'
+                            style='transform: rotate(90deg)'
+                            data-comment-id=" + comment.Id + @">
+                        &lt;
+                    </button>
+                    <button class='btn btn-link " + (IsDownvoted(comment.VoteByUser) ? "text-danger" : "text-black-50") + @" font-weight-bold text-decoration-none comment-downvote-btn'
+                            style='transform: rotate(90deg)'
+                            data-comment-id=" + comment.Id + @">
+                        &gt;
+                    </button>
+                </div>
+                <div class='d-flex flex-column align-items-start justify-content-center p-2'>
+                    <p class='text-secondary'>
+                        <span class='text-black-50 font-weight-bold mr-1'>" + comment.Username + @"</span>
+                        <span class='comment-rating' data-comment-id=" + comment.Id + ">" + comment.Rating + "</span> - " + FormatCreatedAtDate(comment.CreatedAt) + 
+                    @"</p>
+                    <p>" + comment.Content + @"</p>
+                    <p class='font-weight-bold'>
+                        <a class='text-secondary' href=" + $"/Comment/Add?postId={comment.PostId}&commentId={comment.Id}" + @">Reply</a>
+                    </p>
+                </div>
+            </li>";
+    }
+
+    IHtmlContent RenderComments(IEnumerable<Comment> comments)
+    {
+        var output = "<div class='ml-3'>";
+        foreach (var comment in comments)
+        {
+            output += HtmlComment(comment);
+            if (comment.Replies.Count() > 0)
+            {
+                output += RenderComments(comment.Replies);
+            }
+        }
+        output += "</div>";
+        return Html.Raw(output);
+    }
+}
+
+
+@await Html.PartialAsync("_Post", Model.Post)
+<div>
+    <a class="btn btn-primary"
+       href="/Comment/Add?postId=@Model.Post.Id&topicName=@Model.Post.TopicName&postTitle=@Model.Post.Title">
+        Add a comment
+    </a>
+</div>
+<div class="mt-2">
+    <ul class="list-style-none">
+        @RenderComments(Model.Comments)
+    </ul>
+</div>
+
+@section Scripts {
+    <script src="~/js/comment-vote.js"></script>
+    <script src="~/js/post-vote.js"></script>
+}

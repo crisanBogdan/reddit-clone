@@ -1,0 +1,7 @@
+﻿@model IEnumerable<Core.Entity.Post>;
+
+@await Html.PartialAsync("_Posts", Model)
+
+@section Scripts {
+    <script src="~/js/post-vote.js"></script>
+}

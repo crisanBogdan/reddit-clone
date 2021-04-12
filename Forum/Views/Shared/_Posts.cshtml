@@ -1,0 +1,14 @@
+﻿@model IEnumerable<Core.Entity.Post>;
+
+<div>
+    <a class="btn btn-primary mb-2" asp-controller="Post" asp-action="New">Create a post</a>
+
+    <ul class="list-style-none">
+        @{
+            foreach (var post in Model ?? new List<Core.Entity.Post>())
+            {
+                @await Html.PartialAsync("_Post", post)
+            }
+        }
+    </ul>
+</div>
